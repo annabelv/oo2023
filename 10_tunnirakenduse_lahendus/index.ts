@@ -19,7 +19,7 @@ app.use('/', elekter);
 app.use('/', maksmine);
 app.use('/', artiklid);
 
-mongoose.connect("mongodb+srv://annabelv:1q0ocvmn@cluster0.ztrznet.mongodb.net/test");
+mongoose.connect("mongodb+srv://annabelv:*****@cluster0.ztrznet.mongodb.net/test");
 const database = mongoose.connection;
 
 database.on('error', (error) => {
