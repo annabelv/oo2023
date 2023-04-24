@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Artiklid</title>
+		<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+		<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+		<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	</head>
+	<body>
+		<div id="kiht1"></div>
+		<script type="text/babel">
+			function Teated(){
+				const [artiklid, muudaArtiklid]=React.useState([]);
+				const tfPealkiri=React.useRef();
+				const taSisu=React.useRef();
+				React.useEffect(() =>{
+					fetch("http://localhost:3000/artiklid/loetelu").then(d => d.json()).then(muudaArtiklid);
+				}, []);
+				function sisestaTeade(){
+					let aadress="/artiklid/salvesta/"+tfPealkiri.current.value+"/"+taSisu.current.value;
+					fetch(aadress).then(d => d.json()).then(muudaArtiklid);
+				}
+				
+				function kustutaTeade(id){
+					let aadress="/artiklid/kustuta/"+id;
+					fetch(aadress, {"method":"DELETE"}).then(d => d.json()).then(muudaArtiklid);
+				}
+				
+				return <div>
+					<h2>Teadete lisamine</h2>
+					Pealkiri:<br />
+						<input type="text" ref={tfPealkiri} /><br />
+					Sisu: <br />
+						<textarea width="70" height="10" ref={taSisu}></textarea><br />
+						<input type="button" value="sisesta" onClick={() => sisestaTeade()} />
+					<h2>Teadete loetelu</h2>						
+					{artiklid.map(artikkel => 
+						<div key={artikkel._id}>
+							<h2>{artikkel.header}
+							<span onClick={() => {if(confirm("Kas kustutada?")){kustutaTeade(artikkel._id)}} }> x</span></h2>
+							{artikkel.content}
+						</div>
+					)}
+				</div>
+			}
+			const juur=ReactDOM.createRoot(document.getElementById("kiht1"));
+			juur.render(<Teated />);
+		</script>
+	</body>
+</html>
