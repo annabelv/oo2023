@@ -1,0 +1,4 @@
+fetch("/kommentaarid/comment",{"method":"POST",
+	"headers": {"Content-Type": "application/json"},
+	"body": JSON.stringify({"content":"sisu1"})
+}).then(d => d.json()).then(console.log);
